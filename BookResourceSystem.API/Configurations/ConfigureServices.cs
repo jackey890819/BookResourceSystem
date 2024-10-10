@@ -1,4 +1,7 @@
-﻿namespace BookResourceSystem.API.Configurations;
+﻿using BookResourceSystem.Repository;
+using Microsoft.EntityFrameworkCore;
+
+namespace BookResourceSystem.API.Configurations;
 
 /// <summary>
 /// 用於集中管理系統service
@@ -15,5 +18,10 @@ public static partial class Configurations
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // 資料庫
+        builder.Services.AddDbContext<RepositoryContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"))
+        );
     }
 }
