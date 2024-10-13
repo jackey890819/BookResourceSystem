@@ -1,4 +1,5 @@
-﻿using BookResourceSystem.Repository;
+﻿using BookResourceSystem.Contracts.Repository;
+using BookResourceSystem.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookResourceSystem.API.Configurations;
@@ -21,7 +22,12 @@ public static partial class Configurations
 
         // 資料庫
         builder.Services.AddDbContext<RepositoryContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"))
+            options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"),
+                b => b.MigrationsAssembly("BookResourceSystem.API"))
         );
+
+        // Repository
+        builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
     }
 }

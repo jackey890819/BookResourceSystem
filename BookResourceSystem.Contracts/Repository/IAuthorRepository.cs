@@ -2,6 +2,6 @@
 
 namespace BookResourceSystem.Contracts.Repository;
 
-public interface IAuthorRepository
+public interface IAuthorRepository : IRepositoryBase<Author>
 {
 }

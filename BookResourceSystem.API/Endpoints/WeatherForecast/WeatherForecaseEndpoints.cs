@@ -1,8 +1,11 @@
-﻿
+﻿using BookResourceSystem.Contracts.Repository;
+
+
 namespace BookResourceSystem.API.Endpoints.WeatherForecast;
 
 public class WeatherForecaseEndpoints : IEndpoint
 {
+        
     public void MapEndpoints(IEndpointRouteBuilder endpoint)
     {
         endpoint.MapGet("/weatherforecast", () =>
@@ -18,6 +21,13 @@ public class WeatherForecaseEndpoints : IEndpoint
             return forecast;
         })
         .WithName("GetWeatherForecast")
+        .WithOpenApi();
+
+        endpoint.MapGet("/test", (IRepositoryManager repository) =>
+        {
+            return repository.Author.FindAll(false).ToList();
+        })
+        .WithName("Test")
         .WithOpenApi();
     }
 
