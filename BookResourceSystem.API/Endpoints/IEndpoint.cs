@@ -9,5 +9,5 @@ public interface IEndpoint
     /// 註冊端點
     /// </summary>
     /// <param name="endpoint"></param>
-    void MapEndpoints(IEndpointRouteBuilder endpoint);
+    void MapEndpoints(WebApplication endpoint);
 }

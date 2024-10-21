@@ -1,23 +1,57 @@
-﻿
-using BookResourceSystem.Contracts.Repository;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Identity.Client;
-using System.Security.AccessControl;
+﻿namespace BookResourceSystem.API.Endpoints.Books;
 
-namespace BookResourceSystem.API.Endpoints.Books;
-
-public class BooksEndpoints : IEndpoint
+public partial class BooksEndpoints : IEndpoint
 {
-    public void MapEndpoints(IEndpointRouteBuilder endpoint)
+    public void MapEndpoints(WebApplication endpoint)
     {
-        endpoint.MapGet("/api/books", GetBookById);
-    }
+        var group = endpoint.MapGroup("/api/books").WithTags("Books");
 
-    private static async Task<IResult> GetBookById(IRepositoryManager repository, Guid id)
-    {
-        
-        throw new NotImplementedException();
+        // 查詢
+        group.MapGet("/{id:guid}", GetBookById)
+            .Produces(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithOpenApi(op =>
+            {
+                op.Summary = "取得單一圖書";
+                return op;
+            });
+
+        group.MapGet("/", GetBooks)
+            .Produces(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithOpenApi(op =>
+            {
+                op.Summary = "取得圖書列表。";
+                return op;
+            });
+        // 建立
+        group.MapPost("/", CreateBook)
+            .Produces(StatusCodes.Status201Created)
+            .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithOpenApi(op =>
+            {
+                op.Summary = "新增圖書";
+                return op;
+            });
+        // 更新
+        group.MapPut("/", UpdateBook)
+            .Produces(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+            .WithOpenApi(op =>
+            {
+                op.Summary = "更新指定圖書";
+                return op;
+            });
+        // 刪除
+        group.MapDelete("/", DeleteBook)
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithOpenApi(op =>
+            {
+                op.Summary = "刪除指定圖書";
+                return op;
+            });
     }
 }
-
-

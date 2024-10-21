@@ -1,5 +1,4 @@
-﻿using BookResourceSystem.Contracts.Repository;
-using BookResourceSystem.Repository;
+﻿using BookResourceSystem.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookResourceSystem.API.Configurations;
@@ -15,6 +14,25 @@ public static partial class Configurations
     /// <param name="builder"></param>
     public static void ConfigureServices(this WebApplicationBuilder builder)
     {
+        // CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            //.WithExposedHeaders("X-Pagination")
+            );
+        });
+
+        //builder.Services.AddAntiforgery();
+
+        //builder.Services.AddAntiforgery(options =>
+        //{
+        //    // 设置防伪令牌的标头名称
+        //    options.HeaderName = "X-XSRF-TOKEN";
+        //});
+
         // Add services to the container.
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -25,9 +43,5 @@ public static partial class Configurations
             options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"),
                 b => b.MigrationsAssembly("BookResourceSystem.API"))
         );
-
-        // Repository
-        builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-
     }
 }

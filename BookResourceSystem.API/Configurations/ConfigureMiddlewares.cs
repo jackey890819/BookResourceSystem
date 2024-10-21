@@ -1,4 +1,6 @@
-﻿namespace BookResourceSystem.API.Configurations;
+﻿using Microsoft.AspNetCore.Antiforgery;
+
+namespace BookResourceSystem.API.Configurations;
 
 /// <summary>
 /// 用於集中管理系統middleware
@@ -17,8 +19,34 @@ public static partial class Configurations
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseHsts();
+        else
+        {
+            app.UseHsts();
+        }
         app.UseHttpsRedirection();
+        // app.UseStaticFiles();
+        // app.UseCookiePolicy();
+
+        app.UseCors("CorsPolicy");
+
+        // app.UseAuthentication();
+        // app.UseAuthorization();
+        // app.UseSession();
+        // app.UseResponseCompression();
+        // app.UseResponseCaching();
+
+        //app.UseAntiforgery();
+
+        // Temporarily disable Antiforgery
+        //app.Use(async (context, next) =>
+        //{
+        //    var antiforgery = context.RequestServices.GetService<IAntiforgery>();
+        //    var tokens = antiforgery.GetAndStoreTokens(context);
+
+        //    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+        //        new CookieOptions { HttpOnly = false });
+
+        //    await next();
+        //});
     }
 }

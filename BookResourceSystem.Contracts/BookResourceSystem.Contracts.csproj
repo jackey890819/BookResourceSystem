@@ -10,8 +10,4 @@
     <ProjectReference Include="..\BookResourceSystem.Entities\BookResourceSystem.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\" />
-  </ItemGroup>
-
 </Project>
